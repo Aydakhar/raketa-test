@@ -32,9 +32,9 @@ class ProductRepository
     public function getByCategory(string $category): array
     {
         return array_map(
-            static fn (array $row): Product => $this->make($row),
+            fn (array $row): Product => $this->make($row),
             $this->connection->fetchAllAssociative(
-                "SELECT id FROM products WHERE is_active = 1 AND category = " . $category,
+                "SELECT * FROM products WHERE is_active = 1 AND category = " . $category,
             )
         );
     }

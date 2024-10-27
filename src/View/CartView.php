@@ -16,16 +16,17 @@ readonly class CartView
 
     public function toArray(Cart $cart): array
     {
+        $customer = $cart->getCustomer();
         $data = [
             'uuid' => $cart->getUuid(),
             'customer' => [
-                'id' => $cart->getCustomer()->getId(),
+                'id' => $customer->getId(),
                 'name' => implode(' ', [
-                    $cart->getCustomer()->getLastName(),
-                    $cart->getCustomer()->getFirstName(),
-                    $cart->getCustomer()->getMiddleName(),
+                    $customer->getLastName(),
+                    $customer->getFirstName(),
+                    $customer->getMiddleName(),
                 ]),
-                'email' => $cart->getCustomer()->getEmail(),
+                'email' => $customer->getEmail(),
             ],
             'payment_method' => $cart->getPaymentMethod(),
         ];
@@ -39,7 +40,6 @@ readonly class CartView
             $data['items'][] = [
                 'uuid' => $item->getUuid(),
                 'price' => $item->getPrice(),
-                'total' => $total,
                 'quantity' => $item->getQuantity(),
                 'product' => [
                     'id' => $product->getId(),

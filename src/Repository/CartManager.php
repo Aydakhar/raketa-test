@@ -30,9 +30,9 @@ class CartManager extends ConnectorFacade
     public function saveCart(Cart $cart)
     {
         try {
-            $this->connector->set($cart, session_id());
+            $this->connector->set(session_id(), $cart);
         } catch (Exception $e) {
-            $this->logger->error('Error');
+            $this->logger->error($e->getMessage());
         }
     }
 
@@ -42,11 +42,14 @@ class CartManager extends ConnectorFacade
     public function getCart()
     {
         try {
-            return $this->connector->get(session_id());
+            if ($this->connector->has(session_id())) {
+                return $this->connector->get(session_id());
+            } else {
+                return false;
+            }
         } catch (Exception $e) {
-            $this->logger->error('Error');
+            $this->logger->error($e->getMessage());
+            return false;
         }
-
-        return new Cart(session_id(), []);
     }
 }

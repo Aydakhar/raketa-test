@@ -25,7 +25,10 @@ readonly class GetCartController
         if (! $cart) {
             $response->getBody()->write(
                 json_encode(
-                    ['message' => 'Cart not found'],
+                    [
+                        'status' => 'error',
+                        'message' => 'Cart not found'
+                    ],
                     JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
                 )
             );
@@ -36,14 +39,16 @@ readonly class GetCartController
         } else {
             $response->getBody()->write(
                 json_encode(
-                    $this->cartView->toArray($cart),
+                    [
+                        'status' => 'success',
+                        'cart' => $this->cartView->toArray($cart)
+                    ],
                     JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-                )
-            );
-        }
+                ));
 
-        return $response
-            ->withHeader('Content-Type', 'application/json; charset=utf-8')
-            ->withStatus(404);
+            return $response
+                ->withHeader('Content-Type', 'application/json; charset=utf-8')
+                ->withStatus(200);
+        }
     }
 }

@@ -12,18 +12,16 @@ readonly class ProductsView
     ) {
     }
 
-    public function toArray(string $category): array
+    public function toArray(Product $product): array
     {
-        return array_map(
-            fn (Product $product) => [
-                'id' => $product->getId(),
-                'uuid' => $product->getUuid(),
-                'category' => $product->getCategory(),
-                'description' => $product->getDescription(),
-                'thumbnail' => $product->getThumbnail(),
-                'price' => $product->getPrice(),
-            ],
-            $this->productRepository->getByCategory($category)
-        );
+        return [
+            'id' => $product->getId(),
+            'uuid' => $product->getUuid(),
+            'name' => $product->getName(),
+            'category' => $product->getCategory(),
+            'description' => $product->getDescription(),
+            'thumbnail' => $product->getThumbnail(),
+            'price' => $product->getPrice(),
+        ];
     }
 }
